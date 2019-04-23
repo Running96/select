@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>下拉框</title>
+    <link rel="stylesheet" type="text/css" href="./select.css" />
+    <script src="./ajax.js"></script>
+</head>
+<body>
+    
+    <div id="mySelect">
+        <input id="select" value="" type="text"></input>         
+        <span id="tri"></span>
+        <ul id="container" style="display:none;"></ul>
+    </div>
+    <script>
+        var oUL = document.getElementById('container'),        
+            select = document.getElementById('select');
+        var myData = [];  
+        
+        //异步加载数据
+        (function() {
+            ajax('GET', 'data.txt', toArr, '', true);
+
+            //将数据存放在数组里面
+            function toArr(data) {
+                var dataList = JSON.parse(data);
+                for(var i=0,len=dataList.length; i<len; i++){
+                    myData.push(dataList[i].text)
+                }
+            }
+        })();
+
+
+        window.onload = function() {
+            addDom(myData);
+            select.value = myData[0];            
+                
+            select.addEventListener('click', function(e){
+                var s = oUL.style;
+                s.display = s.display == "none" ? "block" : "none";
+                e.stopPropagation();
+            })
+
+            oUL.addEventListener('click',function(e) {
+                select.value = e.target.innerText;
+                oUL.style.display = "none";                 
+            })
+
+
+            document.onclick = function() {
+                container.style.display = "none";
+            }
+
+            select.addEventListener('keyup',function(event){
+                oUL.innerHTML="";
+                var value = select.value;
+                if(value != ''){
+                    oUL.style.height = "auto";
+                    var reg = new RegExp("^"+value+"+");
+                    for(var i=0;i<myData.length;i++){
+                        if(reg.test(myData[i])){
+                            var li=document.createElement("li");
+                            var matchlen = value.length;
+                            var string = myData[i].substr(matchlen);
+                            li.innerHTML="<span style='color:red;'>"+value+"</span>"+string;
+                            oUL.appendChild(li);
+                        }
+                    
+                    }
+                } else {
+                    oUL.style.height = "162px";                
+                    addDom(myData);
+                }
+            })
+
+        }
+
+        
+        //渲染li
+        function addDom(myData) {
+            for(var i=0,len=myData.length; i<len; i++){
+                var oLi = document.createElement('li');
+                    oLi.innerText = myData[i];
+                    oUL.appendChild(oLi);
+            }
+        }
+
+        
+    </script>
+    
+</body>
+</html>

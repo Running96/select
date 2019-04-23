@@ -1,0 +1,16 @@
+[
+    {"text": "apple"},
+    {"text": "banana"},
+    {"text": "peach"},
+    {"text": "watermelon"},
+    {"text": "mango"},
+    {"text": "lemon"},
+    {"text": "pear"},
+    {"text": "orange"},
+    {"text": "grape"},
+    {"text": "strawberry"},
+    {"text": "mulberry"},
+    {"text": "apple2"},
+    {"text": "apple3"},
+    {"text": "apple4"}
+]
